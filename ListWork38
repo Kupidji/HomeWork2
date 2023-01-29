@@ -1,0 +1,34 @@
+// Дан двусвязный линейный список и укзатель на первый элемент данного
+// списка.Необходимо вставить значение Х после N - го по счету элемента
+// списка.Значение N не превышает количество элементов исходного списка.
+// В качестве результата вывести ссылку на элемент, который в получившемся
+// списке находится сразу после вставленного элемента.
+
+#include "pt4.h"
+using namespace std;
+
+void Solve() {
+    Task("ListWork38");
+	int x, n;
+	PNode p, NewNode = new(TNode);
+
+	pt >> x >> n >> p;
+	for (int i = 0; i < n - 1; i++)
+		p = p->Next;
+
+	if (p->Next != NULL) {
+		NewNode->Next = p->Next;
+		NewNode->Prev = p;
+		NewNode->Next->Prev = NewNode;
+		p->Next = NewNode;
+		NewNode->Data = x;
+	}
+	else {
+		NewNode->Prev = p;
+		NewNode->Next = NULL;
+		p->Next = NewNode;
+		NewNode->Data = x;
+	}
+	p = p->Next->Next;
+	pt << p;
+}
