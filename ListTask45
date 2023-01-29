@@ -1,0 +1,67 @@
+//Дан непустой двусвязный список, первый, последний и текущий элементы которого
+//имеют адреса Р1, Р2 и Р3.Используя тип TList,
+//описать процедуры ТоFirst(Т) (делает текущим первый элемент списка L),
+//ТоNext(L) (делает текущим в списке L следующий элемент, если он существует),
+//5есрата(L, D) (присваивает текущему элементу списка L значение D целого типа)
+//и функцию IsLast(L) логического типа(возвращает true, если текущий элемент
+//списка L является его последним элементом, и false в противном случае).
+//Параметр L имеет тип TList; в процедурах ТоFirst и ТоNext он является входным
+//и выходным.С помощью этих процедур и функций присвоить нулевые значения
+//элементам исходного списка с нечетными номерами и вывести количество
+//элементов в списке, а также новые адреса его первого, последнего и текущего
+//жлементов в списке (текущим элементом должен стать последний элемент списка)
+
+#include "pt4.h"
+using namespace std;
+
+struct TList {
+	PNode first;
+	PNode	last;
+	PNode	current;
+};
+
+TList ToFirst(TList L) {
+	L.current = L.first;
+	return L;
+}
+
+TList ToNext(TList L) {
+	L.current = L.current->Next;
+	return L;
+}
+
+TList SetData(TList L, int D) {
+	L.current->Data = D;
+	return L;
+}
+
+bool IsLast(TList L) {
+	return (L.last == L.current);
+}
+
+void Solve() {
+	Task("ListWork45");
+	TList l;
+	PNode p1, p2, p3;
+	pt >> p1 >> p2 >> p3;
+	l.first = p1; l.last = p2; l.current = p3;
+	l = ToFirst(l);
+	l = SetData(l, 0);
+
+	int k = 1;
+
+	while (!IsLast(l)) {
+		l = ToNext(l);
+		k++;
+		if (k % 2 == 1)
+			l = SetData(l, 0);
+	}
+
+	if (ToNext(l).current != NULL) {
+		l = ToNext(l);
+		k++;
+		if (k % 2 == 1 && k != 1) l = SetData(l, 0);
+	}
+	pt << k;
+	pt << l.first << l.last << l.current;
+}
